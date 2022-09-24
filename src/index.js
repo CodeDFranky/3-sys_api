@@ -6,6 +6,10 @@ const api = express();
 
 api.use(express.static(__dirname + '/public'));
 
+api.get('/', (req, res) => {
+    res.send("HELLO BITCH!");
+})
+
 api.listen(port, () => {
     console.log(`API is listening to port ${port}`);
 })
