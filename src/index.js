@@ -16,6 +16,7 @@ api.listen(port, () => {
 })
 
 api.post('/generate', (req, res) => {
+    console.log("Generate a DM");
     const reqQueryObj = req.query;
     const message = reqQueryObj.message ? reqQueryObj.message : '';
     const secret = reqQueryObj.secret ? reqQueryObj.secret : '';
