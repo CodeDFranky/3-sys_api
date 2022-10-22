@@ -39,11 +39,12 @@ api.post('/generate', (req, res) => {
         if (err) {
             res.send(err);
         } else {
-            res.writeHead(200, {
-                'Content-Type': 'image/png',
-                'Content-Length': png.length
-            });
-            res.end(png);
+            // res.writeHead(200, {
+            //     'Content-Type': 'image/png',
+            //     'Content-Length': png.length
+            // });
+            // res.end(png);
+            res.send(`<img src=data:image/png;base64,${png.toString('base64')}>`);
         }
     });
 })
