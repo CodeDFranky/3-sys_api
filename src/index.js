@@ -15,40 +15,35 @@ api.listen(port, () => {
     console.log(`API is listening to port ${port}`);
 })
 
-api.post('/test', (req, res) => {
-    res.send("BITCH");
+api.get('/generate', (req, res) => {
+    const reqQueryObj = req.query;
+    const message = reqQueryObj.message ? reqQueryObj.message.trim() : '';
+    const secret = reqQueryObj.secret ? reqQueryObj.secret.trim() : '';
+    const title = reqQueryObj.altText ? reqQueryObj.altText.trim() : '';
+
+    let options = {
+        bcid: 'datamatrix', // Barcode type
+        text: message, // Text to encode
+        alttext: title, // Additional text
+        scale: 5, // scaling factor
+        includetext: title.length > 0 ? true : false, // Show human-readable text
+        textxalign: 'center', // Always good to set this
+        textsize: 3,
+        padding: 2,
+        backgroundcolor: 'ffffff',
+        // dotty: true
+    }
+
+    bwipjs.toBuffer(options, function (err, png) {
+        if (err) {
+            res.send(err);
+        } else {
+            // res.writeHead(200, {
+            //     'Content-Type': 'image/png',
+            //     'Content-Length': png.length
+            // });
+            // res.end(png);
+            res.send(`<img src=data:image/png;base64,${png.toString('base64')}>`);
+        }
+    });
 })
-
-// api.post('/generate', (req, res) => {
-//     const reqQueryObj = req.query;
-//     const message = reqQueryObj.message ? reqQueryObj.message.trim() : '';
-//     const secret = reqQueryObj.secret ? reqQueryObj.secret.trim() : '';
-//     const title = reqQueryObj.altText ? reqQueryObj.altText.trim() : '';
-
-
-//     let options = {
-//         bcid: 'datamatrix', // Barcode type
-//         text: message, // Text to encode
-//         alttext: title, // Additional text
-//         scale: 5, // scaling factor
-//         includetext: title.length > 0 ? true : false, // Show human-readable text
-//         textxalign: 'center', // Always good to set this
-//         textsize: 3,
-//         padding: 2,
-//         backgroundcolor: 'ffffff',
-//         // dotty: true
-//     }
-
-//     bwipjs.toBuffer(options, function (err, png) {
-//         if (err) {
-//             res.send(err);
-//         } else {
-//             // res.writeHead(200, {
-//             //     'Content-Type': 'image/png',
-//             //     'Content-Length': png.length
-//             // });
-//             // res.end(png);
-//             res.send(`<img src=data:image/png;base64,${png.toString('base64')}>`);
-//         }
-//     });
-// })
